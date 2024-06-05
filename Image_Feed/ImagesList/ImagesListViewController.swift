@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class ImagesListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class ImagesListViewController: UIViewController, 
+                                      UITableViewDelegate,
+                                      UITableViewDataSource {
     @IBOutlet private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
