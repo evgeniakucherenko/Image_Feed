@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    
-    
     // MARK: - UI Elements
     private let profilePhoto: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: .profile))
