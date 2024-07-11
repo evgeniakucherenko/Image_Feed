@@ -27,7 +27,7 @@ final class ImagesListCell: UITableViewCell {
         dateGradientOverlay.colors = [
             UIColor(resource: .ypBlack).withAlphaComponent(0).cgColor,
             UIColor(resource: .ypBlack).withAlphaComponent(0.2).cgColor
-    ]
+        ]
         dateGradientOverlay.locations = [0, 1]
         dateGradient.layer.addSublayer(dateGradientOverlay)
     }

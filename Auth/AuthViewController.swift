@@ -17,11 +17,9 @@ final class AuthViewController: UIViewController {
     weak var delegate: AuthViewControllerDelegate?
     
     private let showWebViewSegueIdentifier = "ShowWebView"
-    private let oauth2Service = OAuth2Service.shared
     
     private let logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: .authScreenLogo))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -33,7 +31,6 @@ final class AuthViewController: UIViewController {
         button.backgroundColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -56,9 +53,13 @@ final class AuthViewController: UIViewController {
         }
     }
     
-    private func setupViews() {
-        [logoView, loginButton].forEach { view.addSubview($0) }
+    private func setupViews() { 
+        [logoView, loginButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
+    
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([

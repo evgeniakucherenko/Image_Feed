@@ -22,9 +22,10 @@ final class TabBarController: UITabBarController {
         }
                
         tabBar.tintColor = UIColor(resource: .ypWhite)
-            if let whiteColor = UIColor(named: "ypWhite") {
+        
+        if let whiteColor = UIColor(named: "ypWhite") {
                 tabBar.unselectedItemTintColor = whiteColor.withAlphaComponent(0.5)
-            }
+        }
     }
 }
     

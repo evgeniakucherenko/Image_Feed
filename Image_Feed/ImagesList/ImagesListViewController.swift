@@ -65,22 +65,22 @@ final class ImagesListViewController: UIViewController,
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == showSingleImageSegueIdentifier{
-               guard
-                   let viewController = segue.destination as? SingleImageViewController,
-                   let indexPath = sender as? IndexPath
-               else {
-                   assertionFailure("Invalid segue destination")
-                   return
-               }
+        if segue.identifier == showSingleImageSegueIdentifier {
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
 
-               let image = UIImage(named: photosName[indexPath.row])
-               _ = viewController.view
-               viewController.singleImage.image = image
-           } else {
-               super.prepare(for: segue, sender: sender)
-           }
-       } 
+            let image = UIImage(named: photosName[indexPath.row])
+            _ = viewController.view
+            viewController.singleImage.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    } 
 }
 
 extension ImagesListViewController {

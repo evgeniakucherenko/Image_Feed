@@ -14,7 +14,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-class WebViewViewController: UIViewController {
+final class WebViewViewController: UIViewController {
     
     @IBOutlet weak var webView: WKWebView!
     weak var delegate: WebViewViewControllerDelegate?
@@ -70,7 +70,8 @@ class WebViewViewController: UIViewController {
         NSLayoutConstraint.activate([
             progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)])
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
     }
     
     private func loadAuthView() {
@@ -91,8 +92,8 @@ class WebViewViewController: UIViewController {
             return
         }
 
-        let request = URLRequest(url: url)
-        webView.load(request)
+            let request = URLRequest(url: url)
+            webView.load(request)
         }
 }
 
