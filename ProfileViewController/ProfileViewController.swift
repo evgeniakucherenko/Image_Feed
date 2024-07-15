@@ -7,8 +7,15 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    
+    private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    private var profileDidChangeObserver: NSObjectProtocol?
+    
     // MARK: - UI Elements
     private let profilePhoto: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: .profile))
@@ -52,6 +59,21 @@ final class ProfileViewController: UIViewController {
         setupViews()
         setupConstraints()
         view.backgroundColor = UIColor(resource: .ypBlack)
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in guard let self = self else { return }
+                self.updateAvatar()
+        }
+        
+        guard let profileResult = profileService.profileInfo else { return }
+        let profile = Profile(from: profileResult)
+        updateProfileDetails(profile: profile)
+        
+        updateAvatar()
     }
     
     // MARK: - Setup Methods
@@ -88,4 +110,25 @@ final class ProfileViewController: UIViewController {
     }
 }
 
+extension ProfileViewController {
+    private func updateProfileDetails(profile: Profile) {
+        self.nameLabel.text = profile.name
+        self.nicknameLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.profileImage?.profile_image.small,
+            let url = URL(string: profileImageURL)
+            else { return }
+        
+        let placeholderImage = UIImage(resource: .userpickIcon)
+        let processor = RoundCornerImageProcessor(radius: .point(61),
+                                                  roundingCorners: .all,
+                                                  backgroundColor: .clear)
+        profilePhoto.clipsToBounds = true
+        profilePhoto.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+    }
+}
 
