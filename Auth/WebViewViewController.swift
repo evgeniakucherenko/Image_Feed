@@ -38,8 +38,8 @@ final class WebViewViewController: UIViewController {
             \.estimatedProgress,
             options: [],
             changeHandler: { [weak self] _, _ in
-            guard let self = self else { return }
-            self.updateProgress()
+                guard let self = self else { return }
+                self.updateProgress()
             }
         )
     }

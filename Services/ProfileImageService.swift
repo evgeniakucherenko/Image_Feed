@@ -16,14 +16,13 @@ final class ProfileImageService {
     private let urlSession = URLSession.shared
   
     private var task: URLSessionTask?
-    private var urlProfile = "https://api.unsplash.com/users/"
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private(set) var profileImage: ProfileImage?
     
     private init() {}
     
     func makeProfileImageRequest(token: String, username: String) -> URLRequest? {
-        let imageUrlString = urlProfile + username
+        let imageUrlString = ProfileConstants.urlProfile + username
         guard let URL = URL(string: imageUrlString) else {
             preconditionFailure("Error")
         }

@@ -15,7 +15,6 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-    private let showWebViewSegueIdentifier = "ShowWebView"
     
     private let logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: .authScreenLogo))
@@ -43,9 +42,10 @@ final class AuthViewController: UIViewController {
     
     private func showWebViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let webViewViewController = storyboard.instantiateViewController(withIdentifier: "WebViewViewController") as? WebViewViewController else {
-                fatalError("Failed to instantiate WebViewViewController from storyboard")
-            }
+        guard let webViewViewController = storyboard.instantiateViewController(
+            withIdentifier: "WebViewViewController") as? WebViewViewController else {
+            fatalError("Failed to instantiate WebViewViewController from storyboard")
+        }
             
         webViewViewController.delegate = self
         present(webViewViewController, animated: true, completion: nil)
@@ -99,8 +99,11 @@ extension AuthViewController: WebViewViewControllerDelegate {
             preferredStyle: .alert
         )
         
-        let action = UIAlertAction(title: "Oк", style: .default) { _ in
-        alert.dismiss(animated: true)
+        let action = UIAlertAction(
+            title: "Oк",
+            style: .default
+        ) { _ in
+            alert.dismiss(animated: true)
         }
                 
         alert.addAction(action)

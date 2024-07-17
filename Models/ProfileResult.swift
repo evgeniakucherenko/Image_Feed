@@ -11,8 +11,8 @@ struct ProfileResult: Codable {
     let id: String
     let updated_at: String
     let username: String
-    let first_name: String
-    let last_name: String
+    let first_name: String?
+    let last_name: String?
     let twitter_username: String?
     let portfolio_url: String?
     let bio: String?

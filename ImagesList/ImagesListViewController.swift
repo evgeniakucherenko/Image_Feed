@@ -60,7 +60,7 @@ final class ImagesListViewController: UIViewController,
         return cell
     }
     
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         let dateText = dateFormatter.string(from: date)
         let imageName = photosName[indexPath.row]
         let image = UIImage(named: imageName) ?? UIImage()

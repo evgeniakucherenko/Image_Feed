@@ -70,7 +70,16 @@ final class ProfileViewController: UIViewController {
         }
         
         guard let profileResult = profileService.profileInfo else { return }
-        let profile = Profile(from: profileResult)
+        let name = [profileResult.first_name,
+                    profileResult.last_name].compactMap { $0 }.joined(separator: " ")
+        let loginName = "@" + profileResult.username
+        let profile = Profile(
+            username: profileResult.username,
+            name: name,
+            loginName: loginName,
+            email: profileResult.email,
+            bio: profileResult.bio
+        )
         updateProfileDetails(profile: profile)
         
         updateAvatar()
@@ -112,9 +121,9 @@ final class ProfileViewController: UIViewController {
 
 extension ProfileViewController {
     private func updateProfileDetails(profile: Profile) {
-        self.nameLabel.text = profile.name
-        self.nicknameLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
+        nameLabel.text = profile.name
+        nicknameLabel.text = profile.loginName
+        descriptionLabel.text = profile.bio
     }
     
     private func updateAvatar() {

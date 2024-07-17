@@ -11,7 +11,7 @@ import UIKit
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
    
-    let dateLabel: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 13)
@@ -19,14 +19,14 @@ final class ImagesListCell: UITableViewCell {
         return label
     }()
     
-    let likeButton: UIButton = {
+    private let likeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "like_button_off"), for: .normal)
         return button
     }()
     
-    let contentImage: UIImageView = {
+    private let contentImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -35,7 +35,7 @@ final class ImagesListCell: UITableViewCell {
         return imageView
     }()
     
-     let dateGradient: UIView = {
+    private let dateGradient: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
