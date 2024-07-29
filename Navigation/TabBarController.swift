@@ -9,27 +9,28 @@ import Foundation
 import UIKit
 
 final class TabBarController: UITabBarController {
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         tabBar.barTintColor = UIColor(resource: .ypBlack)
       
         let imagesListViewController = ImagesListViewController()
-        imagesListViewController.tabBarItem = UITabBarItem(
+        let imagesNavigationController = UINavigationController(rootViewController: imagesListViewController)
+        imagesNavigationController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "tab_editorial_active"),
             selectedImage: nil
         )
         
         let profileViewController = ProfileViewController()
-        profileViewController.tabBarItem = UITabBarItem(
+        let profileNavigationController = UINavigationController(rootViewController: profileViewController)
+        profileNavigationController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "tab_profile_active"),
             selectedImage: nil
         )
         
-        self.viewControllers = [imagesListViewController, profileViewController]
+        self.viewControllers = [imagesNavigationController, profileNavigationController]
         
         tabBar.tintColor = UIColor(resource: .ypWhite)
         if let whiteColor = UIColor(named: "ypWhite") {
@@ -37,6 +38,5 @@ final class TabBarController: UITabBarController {
         }
     }
 }
-    
 
 

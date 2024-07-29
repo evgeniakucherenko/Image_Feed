@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class ProfileImageService {
-    
     static let shared = ProfileImageService()
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
@@ -69,6 +68,10 @@ final class ProfileImageService {
         }
         self.task = task
         task.resume()
+    }
+    
+    func cleanProfileImage() {
+        self.profileImage = nil
     }
 }
 

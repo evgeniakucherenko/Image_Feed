@@ -16,6 +16,7 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
+    // MARK: - UI Elements
     private let logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: .authScreenLogo))
         return imageView
@@ -32,6 +33,7 @@ final class AuthViewController: UIViewController {
         return button
     }()
     
+    // MARK: - Lifecycle
     override  func viewDidLoad() {
         view.backgroundColor = UIColor(resource: .ypBlack)
         setupViews()
@@ -40,18 +42,8 @@ final class AuthViewController: UIViewController {
         configureBackButton()
     }
     
-    private func showWebViewController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let webViewViewController = storyboard.instantiateViewController(
-            withIdentifier: "WebViewViewController") as? WebViewViewController else {
-            fatalError("Failed to instantiate WebViewViewController from storyboard")
-        }
-            
-        webViewViewController.delegate = self
-        present(webViewViewController, animated: true, completion: nil)
-    }
-    
-    private func setupViews() { 
+    // MARK: - Private Methods
+    private func setupViews() {
         [logoView, loginButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
@@ -74,11 +66,22 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "nav_back_button")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "nav_back_button")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black") 
+        navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP Black")
     }
     
     @objc private func didTapLoginButton() {
         showWebViewController()
+    }
+    
+    private func showWebViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let webViewViewController = storyboard.instantiateViewController(
+            withIdentifier: "WebViewViewController") as? WebViewViewController else {
+            fatalError("Failed to instantiate WebViewViewController from storyboard")
+        }
+            
+        webViewViewController.delegate = self
+        present(webViewViewController, animated: true, completion: nil)
     }
 }
 

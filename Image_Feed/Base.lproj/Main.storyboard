@@ -21,9 +21,6 @@
                         <color key="backgroundColor" name="YP Background "/>
                     </view>
                     <navigationItem key="navigationItem" id="Px0-KY-rMW"/>
-                    <connections>
-                        <segue destination="XhX-WA-gQL" kind="presentation" identifier="ShowSingleImage" id="3r8-hu-tfq"/>
-                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="944.27480916030527" y="-2.1126760563380285"/>
@@ -41,22 +38,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X2r-zM-spR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1662" y="200"/>
-        </scene>
-        <!--Single Image View Controller-->
-        <scene sceneID="gLB-2z-XC3">
-            <objects>
-                <viewController storyboardIdentifier=" SingleImageViewControllerID" modalPresentationStyle="fullScreen" id="XhX-WA-gQL" customClass="SingleImageViewController" customModule="Image_Feed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="CzU-im-efI">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="pHJ-wf-TKo"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="gut-fj-dDy"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eLQ-AK-aJ8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="966" y="755"/>
         </scene>
         <!--Navigation Bar Controller-->
         <scene sceneID="Jhl-Hr-iqQ">
