@@ -10,13 +10,26 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
-        window?.rootViewController = SplashViewController()
-        window?.makeKeyAndVisible()
-    }
+            guard let windowScene = (scene as? UIWindowScene) else { return }
+            
+            window = UIWindow(windowScene: windowScene)
+            
+            let splashViewController = SplashViewController()
+            let navigationController = UINavigationController(rootViewController: splashViewController)
+        
+        navigationController.navigationBar.isTranslucent = true
+           navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+           navigationController.navigationBar.shadowImage = UIImage()
+           navigationController.navigationBar.backgroundColor = .clear
+            
+            window?.rootViewController = navigationController
+            window?.makeKeyAndVisible()
+            
+            print("[DEBUG]: SplashViewController embedded in UINavigationController")
+        }
+        
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

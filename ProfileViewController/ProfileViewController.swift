@@ -10,11 +10,11 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    
-    private let profileService = ProfileService.shared
-    
     private var profileImageServiceObserver: NSObjectProtocol?
     private var profileDidChangeObserver: NSObjectProtocol?
+    
+    private let profileService = ProfileService.shared
+    private let profileLogoutService = ProfileLogoutService.shared
     
     // MARK: - UI Elements
     private let profilePhoto: UIImageView = {
@@ -50,6 +50,7 @@ final class ProfileViewController: UIViewController {
         let button = UIButton()
         let image = UIImage(resource: .logoutButton)
         button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -58,31 +59,10 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        setupObservers()
+        setupProfile()
+        
         view.backgroundColor = UIColor(resource: .ypBlack)
-        
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.didChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in guard let self = self else { return }
-                self.updateAvatar()
-        }
-        
-        guard let profileResult = profileService.profileInfo else { return }
-        let name = [profileResult.first_name,
-                    profileResult.last_name].compactMap { $0 }.joined(separator: " ")
-        let loginName = "@" + profileResult.username
-        let profile = Profile(
-            username: profileResult.username,
-            name: name,
-            loginName: loginName,
-            email: profileResult.email,
-            bio: profileResult.bio
-        )
-        updateProfileDetails(profile: profile)
-        
-        updateAvatar()
     }
     
     // MARK: - Setup Methods
@@ -97,7 +77,7 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    func setupConstraints() {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             profilePhoto.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
             profilePhoto.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -116,6 +96,71 @@ final class ProfileViewController: UIViewController {
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             logoutButton.centerYAnchor.constraint(equalTo: profilePhoto.centerYAnchor)
         ])
+    }
+    
+    private func setupObservers() {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: Notification.Name("ProfileImageServiceDidChange"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.updateAvatar()
+        }
+    }
+        
+    private func setupProfile() {
+        guard let profileResult = profileService.profileInfo else { return }
+        
+        let name = [profileResult.first_name,
+                    profileResult.last_name].compactMap { $0 }.joined(separator: " ")
+        let loginName = "@" + profileResult.username
+        let profile = Profile(
+            username: profileResult.username,
+            name: name,
+            loginName: loginName,
+            email: profileResult.email,
+            bio: profileResult.bio
+        )
+        
+        updateProfileDetails(profile: profile)
+        updateAvatar()
+    }
+    
+    // MARK: - Profile logout
+    @objc private func logoutButtonTapped() {
+        showAlert()
+    }
+
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        
+        let yesButton = UIAlertAction(
+            title: "Да",
+            style: .default) { _ in
+                self.profileLogoutService.logout()
+                if let window = UIApplication.shared.windows.first {
+                    window.rootViewController = SplashViewController()
+                    window.makeKeyAndVisible()
+                } else {
+                    assertionFailure("Invalid Configuration")
+                }
+            }
+        
+        let noButton = UIAlertAction(
+            title: "Нет",
+            style: .default,
+            handler: nil
+        )
+        
+        alert.addAction(yesButton)
+        alert.addAction(noButton)
+        alert.preferredAction = noButton
+
+        present(alert, animated: true, completion: nil)
     }
 }
 

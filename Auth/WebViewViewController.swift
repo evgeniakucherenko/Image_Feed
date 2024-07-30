@@ -16,10 +16,12 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
     
+    // MARK: - Properties
     @IBOutlet weak var webView: WKWebView!
     weak var delegate: WebViewViewControllerDelegate?
     private var estimatedProgressObservation: NSKeyValueObservation?
     
+    // MARK: - UI Elements
     private let progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.tintColor = .ypBlack
@@ -27,13 +29,25 @@ final class WebViewViewController: UIViewController {
         return progressView
     }()
     
+    // MARK: - Lifecycle
     override  func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
         loadAuthView()
         view.addSubview(progressView)
         setupConstraints()
-        
+    }
+    
+    // MARK: - Private Methods
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+    }
+    
+    private func setupObservers() {
         estimatedProgressObservation = webView.observe(
             \.estimatedProgress,
             options: [],
@@ -47,14 +61,6 @@ final class WebViewViewController: UIViewController {
     private func updateProgress() {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
-    
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ])
     }
     
     private func loadAuthView() {
@@ -79,6 +85,7 @@ final class WebViewViewController: UIViewController {
         }
 }
 
+// MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,

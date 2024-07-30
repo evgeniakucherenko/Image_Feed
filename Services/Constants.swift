@@ -22,3 +22,7 @@ enum WebViewConstants {
 enum ProfileConstants {
     static let urlProfile = "https://api.unsplash.com/users/"
 }
+
+enum PhotoConstants {
+    static let urlPhoto = "https://api.unsplash.com/"
+}
