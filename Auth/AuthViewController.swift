@@ -16,12 +16,8 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
-    private let showWebViewSegueIdentifier = "ShowWebView"
-    private let oauth2Service = OAuth2Service.shared
-    
     private let logoView: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: .authScreenLogo))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -33,7 +29,6 @@ final class AuthViewController: UIViewController {
         button.backgroundColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -44,20 +39,23 @@ final class AuthViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(self.didTapLoginButton), for: .touchUpInside)
         configureBackButton()
     }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else { fatalError("Failed to prepare for \(showWebViewSegueIdentifier)") }
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
+    
+    private func showWebViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let webViewViewController = storyboard.instantiateViewController(
+            withIdentifier: "WebViewViewController") as? WebViewViewController else {
+            fatalError("Failed to instantiate WebViewViewController from storyboard")
         }
+            
+        webViewViewController.delegate = self
+        present(webViewViewController, animated: true, completion: nil)
     }
     
-    private func setupViews() {
-        [logoView, loginButton].forEach { view.addSubview($0) }
+    private func setupViews() { 
+        [logoView, loginButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
     
     private func setupConstraints() {
@@ -68,7 +66,8 @@ final class AuthViewController: UIViewController {
             loginButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
             loginButton.heightAnchor.constraint(equalToConstant: 48),
-            loginButton.widthAnchor.constraint(equalToConstant: 343)])
+            loginButton.widthAnchor.constraint(equalToConstant: 343)
+        ])
     }
     
     private func configureBackButton() {
@@ -79,7 +78,7 @@ final class AuthViewController: UIViewController {
     }
     
     @objc private func didTapLoginButton() {
-        performSegue(withIdentifier: showWebViewSegueIdentifier, sender: self)
+        showWebViewController()
     }
 }
 
@@ -91,6 +90,24 @@ extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
+    }
+    
+    func showAlert(_ vc: UIViewController)  {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert
+        )
+        
+        let action = UIAlertAction(
+            title: "Oк",
+            style: .default
+        ) { _ in
+            alert.dismiss(animated: true)
+        }
+                
+        alert.addAction(action)
+        vc.present(alert, animated: true, completion: nil)
     }
 }
 
