@@ -128,10 +128,10 @@ extension ImagesListViewController: UITableViewDataSource, ImagesListCellDelegat
                     self.photos = self.imagesListService.photos
                     let isLiked = self.photos[indexPath.row].isLiked
                     completion(isLiked)
-                    UIBlockingProgressHUD.dismiss()
                 case .failure(_):
-                    UIBlockingProgressHUD.dismiss()
+                    break
                 }
+                UIBlockingProgressHUD.dismiss()
             }
         }
     }

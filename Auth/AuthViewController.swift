@@ -76,11 +76,17 @@ final class AuthViewController: UIViewController {
     private func showWebViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let webViewViewController = storyboard.instantiateViewController(
-            withIdentifier: "WebViewViewController") as? WebViewViewController else {
+        withIdentifier: "WebViewViewController") as? WebViewViewController else {
             fatalError("Failed to instantiate WebViewViewController from storyboard")
         }
+    
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        webViewViewController.presenter = webViewPresenter
+        webViewPresenter.view = webViewViewController
             
         webViewViewController.delegate = self
+            
         present(webViewViewController, animated: true, completion: nil)
     }
 }

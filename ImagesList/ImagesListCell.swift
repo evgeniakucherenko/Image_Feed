@@ -136,11 +136,6 @@ final class ImagesListCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-            
-        if selected {
-            contentView.backgroundColor = UIColor.black
-        } else {
-            contentView.backgroundColor = UIColor.black 
-        }
+        contentView.backgroundColor = UIColor.black
     }
 }
