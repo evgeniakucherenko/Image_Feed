@@ -20,6 +20,7 @@ final class WebViewTests: XCTestCase {
       }
     
     func testPresenterCallsLoadRequest() {
+        
         //given
         let viewController = WebViewViewControllerSpy()
         let authHelper = AuthHelper()
@@ -35,6 +36,7 @@ final class WebViewTests: XCTestCase {
     } 
     
     func testProgressVisibleWhenLessThenOne() {
+        
         //given
         let authHelper = AuthHelper()
         let presenter = WebViewPresenter(authHelper: authHelper)
@@ -48,6 +50,7 @@ final class WebViewTests: XCTestCase {
     }
     
     func testProgressHiddenWhenOne() {
+        
         //given
         let authHelper = AuthHelper()
         let presenter = WebViewPresenter(authHelper: authHelper)
@@ -61,6 +64,7 @@ final class WebViewTests: XCTestCase {
     }
     
     func testAuthHelperAuthURL() {
+        
         //given
         let configuration = AuthConfiguration.standard
         let authHelper = AuthHelper(configuration: configuration)
@@ -81,6 +85,7 @@ final class WebViewTests: XCTestCase {
     }
     
     func testCodeFromURL() {
+        
         //given
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize/native")!
         urlComponents.queryItems = [URLQueryItem(name: "code", value: "test code")]
