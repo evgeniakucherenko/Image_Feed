@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-internal protocol ProfilePresenterProtocol {
+public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
 
     func updateProfileDetails()

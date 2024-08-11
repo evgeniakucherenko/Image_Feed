@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 import Kingfisher
 
-internal protocol ProfileViewControllerProtocol: AnyObject {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    
     func updateProfileDetails(profile: Profile)
     func updateAvatar(imageURL: URL)
     func showAlert(title: String, message: String, actions: [UIAlertAction])
@@ -18,7 +20,7 @@ internal protocol ProfileViewControllerProtocol: AnyObject {
 final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
     private var profileDidChangeObserver: NSObjectProtocol?
-    private var presenter: ProfilePresenterProtocol?
+    internal var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI Elements
     private let profilePhoto: UIImageView = {
