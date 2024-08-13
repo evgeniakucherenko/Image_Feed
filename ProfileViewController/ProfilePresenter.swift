@@ -18,7 +18,7 @@ public protocol ProfilePresenterProtocol {
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
-    var view: (any ProfileViewControllerProtocol)?
+    weak var view: (any ProfileViewControllerProtocol)?
     private let profileService = ProfileService.shared
     private let profileLogoutService = ProfileLogoutService.shared
 

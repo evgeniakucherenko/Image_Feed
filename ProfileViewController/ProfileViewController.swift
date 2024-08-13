@@ -20,7 +20,7 @@ public protocol ProfileViewControllerProtocol: AnyObject {
 final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
     private var profileDidChangeObserver: NSObjectProtocol?
-    internal var presenter: ProfilePresenterProtocol?
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI Elements
     private let profilePhoto: UIImageView = {
