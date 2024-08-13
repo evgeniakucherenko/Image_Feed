@@ -30,6 +30,7 @@ final class ImagesListCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "like_button_off"), for: .normal)
         button.addTarget(self, action: #selector(likeButtonClicked(sender:)), for: .touchUpInside)
+        button.accessibilityIdentifier = "likeButton"
         return button
     }()
     

@@ -43,7 +43,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         super.viewDidLoad()
         
         webView.navigationDelegate = self
-        //loadAuthView()
+        webView.accessibilityIdentifier = "UnsplashWebView"
         presenter?.viewDidLoad()
         
         view.addSubview(progressView)

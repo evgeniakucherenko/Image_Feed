@@ -30,6 +30,7 @@ final class AuthViewController: UIViewController {
         button.backgroundColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
+        button.accessibilityIdentifier = "Authenticate"
         return button
     }()
     
@@ -56,7 +57,7 @@ final class AuthViewController: UIViewController {
             logoView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
         
             loginButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90), 
             loginButton.heightAnchor.constraint(equalToConstant: 48),
             loginButton.widthAnchor.constraint(equalToConstant: 343)
         ])
