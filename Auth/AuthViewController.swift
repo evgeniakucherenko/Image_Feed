@@ -30,6 +30,7 @@ final class AuthViewController: UIViewController {
         button.backgroundColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
+        button.accessibilityIdentifier = "Authenticate"
         return button
     }()
     
@@ -56,7 +57,7 @@ final class AuthViewController: UIViewController {
             logoView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
         
             loginButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
+            loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90), 
             loginButton.heightAnchor.constraint(equalToConstant: 48),
             loginButton.widthAnchor.constraint(equalToConstant: 343)
         ])
@@ -76,11 +77,17 @@ final class AuthViewController: UIViewController {
     private func showWebViewController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let webViewViewController = storyboard.instantiateViewController(
-            withIdentifier: "WebViewViewController") as? WebViewViewController else {
+        withIdentifier: "WebViewViewController") as? WebViewViewController else {
             fatalError("Failed to instantiate WebViewViewController from storyboard")
         }
+    
+        let authHelper = AuthHelper()
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        webViewViewController.presenter = webViewPresenter
+        webViewPresenter.view = webViewViewController
             
         webViewViewController.delegate = self
+            
         present(webViewViewController, animated: true, completion: nil)
     }
 }

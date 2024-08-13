@@ -9,12 +9,18 @@ import Foundation
 import UIKit
 import Kingfisher
 
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    
+    func updateProfileDetails(profile: Profile)
+    func updateAvatar(imageURL: URL)
+    func showAlert(title: String, message: String, actions: [UIAlertAction])
+}
+
 final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
     private var profileDidChangeObserver: NSObjectProtocol?
-    
-    private let profileService = ProfileService.shared
-    private let profileLogoutService = ProfileLogoutService.shared
+    var presenter: ProfilePresenterProtocol?
     
     // MARK: - UI Elements
     private let profilePhoto: UIImageView = {
@@ -51,16 +57,23 @@ final class ProfileViewController: UIViewController {
         let image = UIImage(resource: .logoutButton)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "logoutButton"
         return button
     }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter = ProfilePresenter()
+        presenter?.view = self
+        
         setupViews()
         setupConstraints()
         setupObservers()
-        setupProfile()
+        
+        presenter?.updateProfileDetails()
+        presenter?.updateAvatar()
         
         view.backgroundColor = UIColor(resource: .ypBlack)
     }
@@ -104,85 +117,35 @@ final class ProfileViewController: UIViewController {
             object: nil,
             queue: .main
         ) { [weak self] _ in
-            self?.updateAvatar()
+            self?.presenter?.updateAvatar()
         }
-    }
-        
-    private func setupProfile() {
-        guard let profileResult = profileService.profileInfo else { return }
-        
-        let name = [profileResult.first_name,
-                    profileResult.last_name].compactMap { $0 }.joined(separator: " ")
-        let loginName = "@" + profileResult.username
-        let profile = Profile(
-            username: profileResult.username,
-            name: name,
-            loginName: loginName,
-            email: profileResult.email,
-            bio: profileResult.bio
-        )
-        
-        updateProfileDetails(profile: profile)
-        updateAvatar()
     }
     
     // MARK: - Profile logout
     @objc private func logoutButtonTapped() {
-        showAlert()
-    }
-
-    private func showAlert() {
-        let alert = UIAlertController(
-            title: "Пока, пока!",
-            message: "Уверены что хотите выйти?",
-            preferredStyle: .alert
-        )
-        
-        let yesButton = UIAlertAction(
-            title: "Да",
-            style: .default) { _ in
-                self.profileLogoutService.logout()
-                if let window = UIApplication.shared.windows.first {
-                    window.rootViewController = SplashViewController()
-                    window.makeKeyAndVisible()
-                } else {
-                    assertionFailure("Invalid Configuration")
-                }
-            }
-        
-        let noButton = UIAlertAction(
-            title: "Нет",
-            style: .default,
-            handler: nil
-        )
-        
-        alert.addAction(yesButton)
-        alert.addAction(noButton)
-        alert.preferredAction = noButton
-
-        present(alert, animated: true, completion: nil)
+        presenter?.logout()
     }
 }
 
-extension ProfileViewController {
-    private func updateProfileDetails(profile: Profile) {
+extension ProfileViewController: ProfileViewControllerProtocol {
+    func updateProfileDetails(profile: Profile) {
         nameLabel.text = profile.name
         nicknameLabel.text = profile.loginName
         descriptionLabel.text = profile.bio
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.profileImage?.profile_image.small,
-            let url = URL(string: profileImageURL)
-            else { return }
-        
+    func updateAvatar(imageURL: URL) {
         let placeholderImage = UIImage(resource: .userpickIcon)
         let processor = RoundCornerImageProcessor(radius: .point(61),
                                                   roundingCorners: .all,
                                                   backgroundColor: .clear)
         profilePhoto.clipsToBounds = true
-        profilePhoto.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(processor)])
+        profilePhoto.kf.setImage(with: imageURL, placeholder: placeholderImage, options: [.processor(processor)])
+    }
+    
+    func showAlert(title: String, message: String, actions: [UIAlertAction]) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        actions.forEach { alert.addAction($0) }
+        present(alert, animated: true, completion: nil)
     }
 }
-

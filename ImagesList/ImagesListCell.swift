@@ -30,6 +30,7 @@ final class ImagesListCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "like_button_off"), for: .normal)
         button.addTarget(self, action: #selector(likeButtonClicked(sender:)), for: .touchUpInside)
+        button.accessibilityIdentifier = "likeButton"
         return button
     }()
     
@@ -136,11 +137,6 @@ final class ImagesListCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-            
-        if selected {
-            contentView.backgroundColor = UIColor.black
-        } else {
-            contentView.backgroundColor = UIColor.black 
-        }
+        contentView.backgroundColor = UIColor.black
     }
 }
